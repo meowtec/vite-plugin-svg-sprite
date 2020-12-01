@@ -23,7 +23,7 @@ const config = {
 
 app code:
 ```javascript
-import appIconId from './path/to/icon/app.svg';
+import appIconId from './path/to/icons/app.svg';
 
 // react or vue component, as you want
 export default function App() {

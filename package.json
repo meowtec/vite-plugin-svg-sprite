@@ -1,7 +1,7 @@
 {
   "name": "vite-plugin-svg-sprite",
   "version": "0.1.0",
-  "description": "",
+  "description": "SVG sprite plugin for Vite",
   "main": "lib/index.js",
   "files": [
     "lib",
@@ -14,7 +14,15 @@
     "build": "tsc && npx tsc -m es2015 --outDir es",
     "prepublish": "npm run build"
   },
+  "keywords": [
+    "vite",
+    "svg"
+  ],
   "author": "meowtec<bertonzh@gmail.com>",
+  "homepage": "https://github.com/meowtec/vite-plugin-svg-sprite",
+  "bugs": {
+    "url": "https://github.com/meowtec/vite-plugin-svg-sprite/issues"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/micromatch": "^4.0.1",

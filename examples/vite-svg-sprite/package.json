@@ -1,0 +1,16 @@
+{
+  "name": "vite-svg-sprite",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vue": "^3.0.2"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.2",
+    "vite": "^1.0.0-rc.13",
+    "vite-plugin-svg-sprite": "file:../../vite-plugin-svg-sprite-0.1.0.tgz"
+  }
+}
