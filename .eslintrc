@@ -1,0 +1,24 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+  },
+  "plugins": [
+    "@typescript-eslint",
+  ],
+  "extends": [
+    "airbnb-typescript/base"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+  },
+  "globals": {
+    "describe": true,
+    "it": true,
+  },
+  "rules": {
+    "no-underscore-dangle": 0,
+    "no-multi-assign": 0,
+  },
+}
