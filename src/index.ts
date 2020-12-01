@@ -6,6 +6,8 @@ import SVGCompiler from 'svg-baker';
 import Svgo, { Options as SvgoOptions } from 'svgo';
 import { Transform } from 'vite';
 
+const { stringify } = JSON;
+
 export interface SvgSpriteOptions {
   include?: string[] | string;
   symbolId?: string;
@@ -54,8 +56,8 @@ export default (options?: SvgSpriteOptions) => {
 
       return `
         import addSymbol from 'vite-plugin-svg-sprite/es/runtime';
-        addSymbol(${JSON.stringify(symbol.render())});
-        export default ${JSON.stringify(id)};
+        addSymbol(${stringify(symbol.render())}, ${stringify(id)});
+        export default ${stringify(id)};
       `;
     },
   };

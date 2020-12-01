@@ -38,7 +38,7 @@ function getSVGRoot() {
 
 export default function addSymbol(symbol: string, id: string) {
   if (idSet.indexOf(id) > -1 || doc.getElementById(id)) {
-    console.warn(`icon#${id} has been registered.`);
+    console.warn(`Icon #${id} was duplicately registered. It must be globally unique.`);
   }
   idSet.push(id);
 
