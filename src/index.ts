@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import micromatch from 'micromatch';
 import SVGCompiler from 'svg-baker';
 import Svgo, { Options as SvgoOptions } from 'svgo';
-import { Transform } from 'vite';
+import { Plugin } from 'vite';
 
 const { stringify } = JSON;
 
@@ -22,14 +22,16 @@ export default (options?: SvgSpriteOptions) => {
     svgo = new Svgo(options?.svgo === true ? {} : options?.svgo);
   }
 
-  const svgSpriteTransform: Transform = {
-    test({ path }) {
-      return micromatch.isMatch(path, match);
-    },
+  const plugin: Plugin = {
+    name: 'svg-sprite',
 
-    async transform({ path }) {
-      const { name } = p.parse(path);
-      let code = await fs.promises.readFile(path, 'utf-8');
+    async transform(src, filepath) {
+      if (!micromatch.isMatch(filepath, match)) {
+        return undefined;
+      }
+
+      let code = await fs.promises.readFile(filepath, 'utf-8');
+      const { name } = p.parse(filepath);
       if (svgo) {
         code = (await svgo.optimize(code)).data;
       }
@@ -51,7 +53,7 @@ export default (options?: SvgSpriteOptions) => {
       const symbol = await svgCompiler.addSymbol({
         id,
         content: code,
-        path,
+        path: filepath,
       });
 
       return `
@@ -62,9 +64,5 @@ export default (options?: SvgSpriteOptions) => {
     },
   };
 
-  return {
-    transforms: [
-      svgSpriteTransform,
-    ],
-  };
+  return plugin;
 };
