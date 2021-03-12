@@ -29,7 +29,9 @@ function domReady(listener: ReadyListener) {
 function getSVGRoot() {
   if (!root) {
     root = document.createElementNS('http://www.w3.org/2000/svg', 'svg') as SVGSVGElement;
-    root.style.display = 'none';
+    root.style.position = 'absolute';
+    root.style.width = '0';
+    root.style.height = '0';
     doc.body.insertBefore(root, doc.body.firstChild);
   }
 
