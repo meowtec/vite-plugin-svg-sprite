@@ -1,30 +1,10 @@
+import domReady from 'domready';
+
 const doc = document;
 
 const idSet = (window as any)._SVG_SPRITE_IDS_ = (window as any)._SVG_SPRITE_IDS_ || [];
 
 let root: SVGSVGElement | null = null;
-
-type ReadyListener = () => void;
-
-let listeners: ReadyListener[] | null = null;
-
-function domReady(listener: ReadyListener) {
-  const complete = document.readyState === 'complete';
-
-  if (complete) {
-    setTimeout(listener, 0);
-    return;
-  }
-
-  if (!listeners) {
-    listeners = [];
-    document.addEventListener('DOMContentLoaded', () => {
-      listeners?.forEach((fn) => fn());
-    });
-  }
-
-  listeners.push(listener);
-}
 
 function getSVGRoot() {
   if (!root) {

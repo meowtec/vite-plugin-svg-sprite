@@ -4,6 +4,15 @@
     <br />
     ALARM
     <Icon :name="alarmIconId" />
+    <hr />
+    Icons imported by import()<br />
+    <Icon name="car" />
+    <Icon name="drag" />
+    <Icon name="edit" />
+    <Icon name="education" />
+    <Icon name="email" />
+    <Icon name="example" />
+    <hr />
   </div>
 </template>
 
