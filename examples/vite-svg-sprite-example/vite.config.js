@@ -8,8 +8,8 @@ const config = {
   plugins: [
     pluginVue(),
     createSvgSpritePlugin({
-      include: '**/icons/*.svg',
-      symbolId: 'icon-[name]-[hash]',
+      include: '**/icons/**/*.svg',
+      symbolId: '[name]', // if you need special name: symbolId: 'icon-[name]-[hash]'
     })],
 };
 
