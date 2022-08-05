@@ -6,18 +6,16 @@
   "types": "lib/index.d.ts",
   "exports": {
     ".": {
-      "import": "./es/index.js",
+      "import": "./index.mjs",
       "require": "./lib/index.js"
     },
-    "./runtime": {
-      "import": "./es/runtime.js",
-      "require": "./lib/runtime.js"
-    }
+    "./runtime": "./es/runtime.js"
   },
   "files": [
     "lib",
     "es",
     "src",
+    "index.mjs",
     "LICENSE"
   ],
   "scripts": {
