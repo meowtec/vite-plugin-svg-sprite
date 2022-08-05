@@ -3,6 +3,17 @@
   "version": "0.2.4",
   "description": "SVG sprite plugin for Vite",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./es/index.js",
+      "require": "./lib/index.js"
+    },
+    "./runtime": {
+      "import": "./es/runtime.js",
+      "require": "./lib/runtime.js"
+    }
+  },
   "files": [
     "lib",
     "es",

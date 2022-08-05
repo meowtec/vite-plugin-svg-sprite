@@ -59,7 +59,7 @@ export default (options?: SvgSpriteOptions) => {
       });
 
       return `
-        import addSymbol from 'vite-plugin-svg-sprite/es/runtime';
+        import addSymbol from 'vite-plugin-svg-sprite/runtime';
         addSymbol(${stringify(symbol.render())}, ${stringify(id)});
         export default ${stringify(id)};
       `;
