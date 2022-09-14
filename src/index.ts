@@ -3,24 +3,22 @@ import fs from 'fs';
 import crypto from 'crypto';
 import micromatch from 'micromatch';
 import SVGCompiler from 'svg-baker';
-import Svgo, { Options as SvgoOptions } from 'svgo';
+import { optimize, OptimizeOptions as SvgoOptimizeOptions } from 'svgo';
 import { Plugin } from 'vite';
 
 const { stringify } = JSON;
 
+export type { SvgoOptimizeOptions };
 export interface SvgSpriteOptions {
   include?: string[] | string;
   symbolId?: string;
-  svgo?: boolean | SvgoOptions;
+  svgo?: boolean | SvgoOptimizeOptions;
 }
 
 export default (options?: SvgSpriteOptions) => {
   const svgCompiler = new SVGCompiler();
   const match = options?.include ?? '**.svg';
-  let svgo: Svgo | null;
-  if (options?.svgo !== false) {
-    svgo = new Svgo(options?.svgo === true ? {} : options?.svgo);
-  }
+  const svgoOptions = options?.svgo;
 
   const plugin: Plugin = {
     name: 'svg-sprite',
@@ -34,8 +32,12 @@ export default (options?: SvgSpriteOptions) => {
 
       let code = await fs.promises.readFile(filepath, 'utf-8');
       const { name } = p.parse(filepath);
-      if (svgo) {
-        code = (await svgo.optimize(code)).data;
+      if (svgoOptions !== false) {
+        const result = (optimize(code, svgoOptions === true ? undefined : svgoOptions));
+        if (result.error != null) {
+          throw result.error;
+        }
+        code = result.data;
       }
 
       let id = name;
