@@ -35,7 +35,7 @@ export default (options?: SvgSpriteOptions) => {
       if (svgoOptions !== false) {
         const result = (optimize(code, svgoOptions === true ? undefined : svgoOptions));
         if (result.error != null) {
-          throw result.error;
+          throw new Error(result.error);
         }
         code = result.data;
       }
