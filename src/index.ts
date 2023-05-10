@@ -60,11 +60,16 @@ export default (options?: SvgSpriteOptions) => {
         path: filepath,
       });
 
-      return `
+      const codeToReturn = `
         import addSymbol from 'vite-plugin-svg-sprite/runtime';
         addSymbol(${stringify(symbol.render())}, ${stringify(id)});
         export default ${stringify(id)};
       `;
+
+      return {
+        code: codeToReturn,
+        map: { mappings: '' },
+      }
     },
   };
 
