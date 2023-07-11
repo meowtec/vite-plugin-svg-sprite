@@ -72,8 +72,7 @@ export default (options?: SvgSpriteOptions) => {
         import addSymbol from 'vite-plugin-svg-sprite/runtime';
         addSymbol(${stringify(symbol.render())}, ${stringify(id)});
         export default ${stringify(id)};
-        export const width = ${stringify(topLevelAttributes.width)};
-        export const height = ${stringify(topLevelAttributes.height)};
+        export const size = { width: ${stringify(topLevelAttributes.width)}, height: ${stringify(topLevelAttributes.height)} };
       `;
 
       return {
