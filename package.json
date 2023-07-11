@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/micromatch": "^4.0.1",
     "@types/node": "^14.14.21",
+    "@types/svg-parser": "^2.0.3",
     "@types/svgo": "^2.6.4",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "eslint": "^7.14.0",
@@ -47,6 +48,7 @@
   "dependencies": {
     "micromatch": "^4.0.2",
     "svg-baker": "~1.7.0",
+    "svg-parser": "^2.0.4",
     "svgo": "^2.8.0"
   },
   "peerDependencies": {
