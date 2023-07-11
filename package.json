@@ -9,12 +9,14 @@
       "import": "./index.mjs",
       "require": "./lib/index.js"
     },
-    "./runtime": "./es/runtime.js"
+    "./runtime": "./es/runtime.js",
+    "./client": "./client.d.ts"
   },
   "files": [
     "lib",
     "es",
     "src",
+    "client.d.ts",
     "index.mjs",
     "LICENSE"
   ],
