@@ -36,7 +36,7 @@ export default (options?: SvgSpriteOptions) => {
       const root = parse(code);
       let topLevelAttributes: Record<string, string | number> = {};
       if (root.children[0]?.type === 'element') {
-        topLevelAttributes = root.children[0].properties ?? {}
+        topLevelAttributes = root.children[0].properties ?? {};
       }
 
       const { name } = p.parse(filepath);
@@ -78,7 +78,7 @@ export default (options?: SvgSpriteOptions) => {
       return {
         code: codeToReturn,
         map: { mappings: '' },
-      }
+      };
     },
   };
 
