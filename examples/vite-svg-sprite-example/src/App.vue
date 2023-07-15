@@ -1,30 +1,27 @@
 <template>
   <div>
-    <HelloWorld />
+    <h2>Normal import:</h2>
+    <Icon :name="alarmIcon" />
+    <h2>Dynamic import:</h2>
     <Dynamic />
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-
-const sleep = (second) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, second * 1000);
-  });
-}
+import Icon from './components/Icon.vue';
+import Dynamic from './components/Dynamic.vue';
+import alarmIcon from './assets/icons/alarm.svg';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    Dynamic: defineAsyncComponent(async () => {
-      await sleep(2);
-      return import('./components/Test.vue')
-    }),
+    Icon,
+    Dynamic,
+  },
+  data() {
+    return {
+      alarmIcon,
+    };
   },
 };
 </script>

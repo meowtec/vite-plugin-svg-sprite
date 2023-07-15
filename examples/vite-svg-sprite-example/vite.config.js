@@ -11,7 +11,7 @@ const config = {
     pluginVue(),
     createSvgSpritePlugin({
       include: '**/icons/**/*.svg',
-      symbolId: '[name]', // if you need special name: symbolId: 'icon-[name]-[hash]'
+      symbolId: 'icon-[name]-[hash]', // if you need special name: symbolId: 'icon-[name]-[hash]'
     })],
 };
 
