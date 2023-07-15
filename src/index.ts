@@ -3,6 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import micromatch from 'micromatch';
 import SVGCompiler from 'svg-baker';
+import { parse } from 'svg-parser';
 import { optimize, OptimizeOptions as SvgoOptimizeOptions } from 'svgo';
 import { Plugin } from 'vite';
 
@@ -31,6 +32,13 @@ export default (options?: SvgSpriteOptions) => {
       }
 
       let code = await fs.promises.readFile(filepath, 'utf-8');
+
+      const root = parse(code);
+      let topLevelAttributes: Record<string, string | number> = {};
+      if (root.children[0]?.type === 'element') {
+        topLevelAttributes = root.children[0].properties ?? {};
+      }
+
       const { name } = p.parse(filepath);
       if (svgoOptions !== false) {
         const result = (optimize(code, svgoOptions === true ? undefined : svgoOptions));
@@ -64,12 +72,13 @@ export default (options?: SvgSpriteOptions) => {
         import addSymbol from 'vite-plugin-svg-sprite/runtime';
         addSymbol(${stringify(symbol.render())}, ${stringify(id)});
         export default ${stringify(id)};
+        export const size = { width: ${stringify(topLevelAttributes.width)}, height: ${stringify(topLevelAttributes.height)} };
       `;
 
       return {
         code: codeToReturn,
         map: { mappings: '' },
-      }
+      };
     },
   };
 
