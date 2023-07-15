@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import micromatch from 'micromatch';
 import SVGCompiler from 'svg-baker';
 import { parse } from 'svg-parser';
-import { optimize, OptimizeOptions as SvgoOptimizeOptions } from 'svgo';
+import { optimize, Config as SvgoOptimizeOptions } from 'svgo';
 import { Plugin } from 'vite';
 
 const { stringify } = JSON;
@@ -42,9 +42,6 @@ export default (options?: SvgSpriteOptions) => {
       const { name } = p.parse(filepath);
       if (svgoOptions !== false) {
         const result = (optimize(code, svgoOptions === true ? undefined : svgoOptions));
-        if (result.error != null) {
-          throw new Error(result.error);
-        }
         code = result.data;
       }
 
