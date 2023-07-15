@@ -2,19 +2,37 @@
   "name": "vite-plugin-svg-sprite",
   "version": "0.3.2",
   "description": "SVG sprite plugin for Vite",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./index.mjs",
-      "require": "./lib/index.js"
+      "import": {
+        "types": "./esm/index.d.ts",
+        "default": "./esm/index.js"
+      },
+      "require": {
+        "types": "./cjs/index.d.ts",
+        "default": "./cjs/index.js"
+      }
     },
-    "./runtime": "./es/runtime.js",
-    "./client": "./client.d.ts"
+    "./runtime": {
+      "import": {
+        "types": "./esm/runtime.d.ts",
+        "default": "./esm/runtime.js"
+      },
+      "require": {
+        "types": "./cjs/runtime.d.ts",
+        "default": "./cjs/runtime.js"
+      }
+    },
+    "./client": {
+      "types": "./client.d.ts"
+    }
   },
+  "main": "cjs/index.js",
+  "types": "cjs/index.d.ts",
   "files": [
-    "lib",
-    "es",
+    "cjs",
+    "esm",
     "src",
     "client.d.ts",
     "index.mjs",
@@ -22,7 +40,7 @@
   ],
   "scripts": {
     "lint": "eslint src",
-    "build": "tsc && npx tsc -m es2015 --outDir es",
+    "build": "rm -rf cjs esm && tsc && npx tsc -m commonjs --outDir cjs && cp ./package-cjs.json cjs/package.json",
     "prepublish": "npm run build"
   },
   "keywords": [

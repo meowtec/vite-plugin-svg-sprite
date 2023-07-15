@@ -100,5 +100,5 @@ dist
 # TernJS port file
 .tern-port
 
-lib
-es
+esm
+cjs

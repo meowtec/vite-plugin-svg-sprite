@@ -1,3 +1,5 @@
+// @ts-check
+
 import pluginVue from '@vitejs/plugin-vue';
 import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
 
