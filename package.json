@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-svg-sprite",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "SVG sprite plugin for Vite",
   "type": "module",
   "exports": {
@@ -41,7 +41,7 @@
   "scripts": {
     "lint": "eslint src",
     "build": "rm -rf cjs esm && tsc && npx tsc -m commonjs --outDir cjs && cp ./package-cjs.json cjs/package.json",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "vite",
