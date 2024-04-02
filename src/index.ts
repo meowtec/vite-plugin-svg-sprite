@@ -14,6 +14,11 @@ export interface SvgSpriteOptions {
   include?: string[] | string;
   symbolId?: string;
   svgo?: boolean | SvgoOptimizeOptions;
+  replaceAttrValues?: Record<string, string>;
+}
+
+function replaceAttrValues(icon: string, options: Record<string, string>) {
+  return Object.entries(options).reduce((acc, [key, value]) => acc.replace(new RegExp(key, 'g'), value), icon);
 }
 
 export default (options?: SvgSpriteOptions) => {
@@ -43,6 +48,10 @@ export default (options?: SvgSpriteOptions) => {
       if (svgoOptions !== false) {
         const result = (optimize(code, svgoOptions === true ? undefined : svgoOptions));
         code = result.data;
+
+        if (options?.replaceAttrValues) {
+          code = replaceAttrValues(code, options.replaceAttrValues);
+        }
       }
 
       let id = name;
