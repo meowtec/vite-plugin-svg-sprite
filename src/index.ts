@@ -14,6 +14,7 @@ export interface SvgSpriteOptions {
   include?: string[] | string;
   symbolId?: string;
   svgo?: boolean | SvgoOptimizeOptions;
+  moduleSideEffects?: boolean;
 }
 
 export default (options?: SvgSpriteOptions) => {
@@ -74,6 +75,7 @@ export default (options?: SvgSpriteOptions) => {
 
       return {
         code: codeToReturn,
+        moduleSideEffects: options?.moduleSideEffects ?? true,
         map: { mappings: '' },
       };
     },
