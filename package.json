@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-svg-sprite",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "SVG sprite plugin for Vite",
   "type": "module",
   "exports": {
