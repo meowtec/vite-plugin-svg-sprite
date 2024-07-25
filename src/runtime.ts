@@ -3,7 +3,9 @@ function createAddSymbol() {
     return () => {};
   }
 
-  const idSet = (window as any)._SVG_SPRITE_IDS_ = (window as any)._SVG_SPRITE_IDS_ || [];
+  const idSet: Set<string> = (
+    (window as any)._SVG_SPRITE_IDS_ = (window as any)._SVG_SPRITE_IDS_ || new Set()
+  );
 
   const root = document.createElementNS('http://www.w3.org/2000/svg', 'svg') as SVGSVGElement;
   root.style.position = 'absolute';
@@ -21,12 +23,19 @@ function createAddSymbol() {
   }
 
   return function addSymbol(symbol: string, id: string) {
-    if (idSet.indexOf(id) > -1 || document.getElementById(id)) {
+    if (idSet.has(id) || document.getElementById(id)) {
       console.warn(`Icon #${id} was duplicately registered. It must be globally unique.`);
     }
-    idSet.push(id);
+    idSet.add(id);
 
     root.insertAdjacentHTML('beforeend', symbol);
+
+    const el = root.lastChild;
+
+    return function dispose() {
+      idSet.delete(id);
+      el?.remove();
+    };
   };
 }
 
