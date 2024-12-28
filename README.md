@@ -1,15 +1,22 @@
 # vite-plugin-svg-sprite
 
-SVG sprite plugin for [Vite](https://github.com/vitejs/vite)
+> A Vite plugin for importing SVG files as SVG sprite symbols or components.
 
-## install
+## Installation
+
+You can install the plugin using npm, pnpm, or yarn:
+
+```bash
+npm install vite-plugin-svg-sprite --save-dev
+# or
+pnpm add vite-plugin-svg-sprite --save-dev
+# or
+yarn add vite-plugin-svg-sprite --dev
 ```
-npm i vite-plugin-svg-sprite -D
-```
 
-## Usage
+## How to Use
 
-Add the plugin to your `vite.config.js`:
+To use the plugin, import and configure it in your Vite configuration file (`vite.config.js|ts`):
 
 ```javascript
 import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
@@ -17,66 +24,70 @@ import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
 const config = {
   plugins: [
     createSvgSpritePlugin({
-      symbolId: 'icon-[name]-[hash]',
+      exportType: 'vanilla', // or 'react' or 'vue'
+      include: '**/icons/*.svg'
     }),
   ],
 }
 ```
 
-Then use it like that in your app code:
+### React
 
-```jsx
-import appIconId from './path/to/icons/app.svg';
-
-// react or vue component, as you want
-export default function App() {
-  return (
-    <svg>
-      <use
-        xlinkHref={`#${appIconId}`}
-      />
-    </svg>
-  );
-}
-```
-
-You can also access the `width`/`height` attributes of the SVG with the `size` export:
-
-```jsx 
-import appIconId, { size } from './path/to/icons/app.svg';
-
-// react or vue component, as you want
-export default function App() {
-  return (
-    <svg {...size}>
-      <use
-        xlinkHref={`#${appIconId}`}
-      />
-    </svg>
-  );
-}
-```
-
-If you're using TypeScript, add the following line to your `vite-env.d.ts`:
-```diff
-/// <reference types="vite/client" />
-+ /// <reference types="vite-plugin-svg-sprite/client" />
-```
-
-## options
+For React projects, set the `exportType` to `'react'` to import SVGs as components:
 
 ```javascript
-const plugin = createSvgSpritePlugin(options);
+import IconFoo from './icons/foo.svg';
+
+<IconFoo />
 ```
 
-### `options.symbolId: string`
+This may seem similar to `svgr` but internally they are different.
 
-For generating the `id` attribute of `<symbol>` element. Defaults to `[name]`
+`vite-plugin-svg-sprite` usually has a better render performance.
 
-### `options.include: string | string[]`
+### Vue
 
-Match files that will be transformed. Defaults to `'**.svg'`. See [micromatch](https://github.com/micromatch/micromatch) for the syntax document.
+For Vue projects, set the `exportType` to `'vue'` to import SVGs as components:
 
-### `options.svgo: boolean | SvgoOptions`
+```javascript
+import IconFoo from './icons/foo.svg';
 
-Enable [SVGO](https://github.com/svg/svgo) for optimizing SVG. Defaults to `true`.
+<IconFoo />
+```
+
+### Non-React / Non-Vue
+
+For users not using React or Vue, set the `exportType` to `'vanilla'`. The imported value will be the `symbolId`, which can be used with SVG `<use>`:
+
+```javascript
+import IconFoo from './icons/foo.svg';
+const html = `
+  <svg>
+    <use xlink:href="#${IconFoo}" />
+  </svg>
+`;
+```
+
+### TypeScript Users
+
+To get proper type hints in TypeScript, include the appropriate type definitions in your `tsconfig.json`:
+
+```json
+"types": [
+  // or "vite-plugin-svg-sprite/typings/react" | "vite-plugin-svg-sprite/typings/vue"
+  "vite-plugin-svg-sprite/typings/vanilla"
+],
+```
+
+## API Configuration Options
+
+- **symbolId**: (`string`, optional) Controls the generated symbol ID. Default is `'icon-[name]'`.
+
+- **exportType**: (`'vanilla' | 'react' | 'vue'`, optional) Determines the type of the exported value. Default is `'vanilla'`. 
+  - If set to `'vanilla'`, the value will be the `symbolId`.
+  - If set to `'react'`, the value will be a React component.
+  - If set to `'vue'`, the value will be a Vue component.
+
+- **svgo**: (object, optional) Configuration for SVGO, refer to the [SVGO documentation](https://github.com/svg/svgo) for details.
+
+- **include**: (string | string[], optional) Paths to match SVG files that should be processed. Default is `'**/icons/*.svg'`, following [micromatch](https://github.com/micromatch/micromatch) rules.
