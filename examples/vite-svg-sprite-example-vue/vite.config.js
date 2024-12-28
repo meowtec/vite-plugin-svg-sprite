@@ -1,5 +1,3 @@
-// @ts-check
-
 import pluginVue from '@vitejs/plugin-vue';
 import createSvgSpritePlugin from 'vite-plugin-svg-sprite';
 
@@ -11,6 +9,7 @@ const config = {
     pluginVue(),
     createSvgSpritePlugin({
       include: '**/icons/**/*.svg',
+      exportType: 'vue',
       symbolId: 'icon-[name]-[hash]',
     })],
 };
