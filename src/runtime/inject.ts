@@ -14,8 +14,11 @@ function createAddSymbol(): AddSymbol {
   root.style.position = 'absolute';
   root.style.width = '0';
   root.style.height = '0';
-  root.style.visibility = 'hidden';
+  root.style.overflow = 'hidden';
   root.ariaHidden = 'true';
+
+  // DO NOT SET THIS
+  // root.style.visibility = 'hidden';
 
   function insertRoot() {
     document.body.insertBefore(root, document.body.firstChild);

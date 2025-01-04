@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h2>Normal import:</h2>
+    <h2>Static import:</h2>
     <Icon :name="alarmIcon" />
+    <Icon :name="cubeIcon" />
     <h2>Dynamic import:</h2>
     <Dynamic />
   </div>
@@ -11,6 +12,7 @@
 import Icon from './components/Icon.vue';
 import Dynamic from './components/Dynamic.vue';
 import alarmIcon from './assets/icons/alarm.svg';
+import cubeIcon from './assets/icons/cube.svg';
 
 export default {
   name: 'App',
@@ -21,6 +23,7 @@ export default {
   data() {
     return {
       alarmIcon,
+      cubeIcon,
     };
   },
 };
