@@ -15,8 +15,8 @@
       }
     },
     "./runtime/*.js": "./esm/runtime/*.js",
-    "./react": {
-      "types": "./react.d.ts"
+    "./typings/*": {
+      "types": "./typings/*.d.ts"
     }
   },
   "main": "cjs/index.js",
