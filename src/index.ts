@@ -10,14 +10,38 @@ const { stringify } = JSON;
 
 const exportTypes = ['vanilla', 'react', 'vue'] as const;
 
+export interface DefaultExportType {
+  exportType?: (typeof exportTypes)[number];
+}
+
+interface AdapterOptions {
+  id: string;
+  name: string;
+  symbolXml: string;
+  attributes: {
+    width?: string | null;
+    height?: string | null;
+    viewBox?: string | null;
+  }
+}
+
+export interface CustomExportType {
+  exportType: 'custom';
+  adapter: (options: AdapterOptions) => unknown;
+}
+
+type ExportType = DefaultExportType | CustomExportType;
+
 export type { SvgoOptimizeOptions };
-export interface SvgSpriteOptions {
+
+export interface BaseSvgSpriteOptions {
   include?: string[] | string;
   symbolId?: string;
   svgo?: SvgoOptimizeOptions;
-  exportType?: (typeof exportTypes)[number];
   moduleSideEffects?: boolean;
 }
+
+type SvgSpriteOptions = BaseSvgSpriteOptions & ExportType;
 
 function getHash(content: string) {
   const h = crypto.createHash('sha256');
@@ -25,9 +49,55 @@ function getHash(content: string) {
   return h.digest('hex');
 }
 
+function getModuleTemplate(type: ExportType = {}) {
+  if (type.exportType === 'custom') {
+    const preparedAdapter = type.adapter.toString();
+
+    return (options: AdapterOptions) => `
+      const id = ${stringify(options.id)};
+      const name = ${stringify(options.name)};
+      const symbolXml = ${stringify(options.symbolXml)};
+      const { dispose } = addSymbol(symbolXml, id);
+      
+      export default ${preparedAdapter};
+      export const attributes = ${stringify(options.attributes)}
+
+      if (import.meta.hot) {
+        import.meta.hot.dispose(dispose);
+        import.meta.hot.accept();
+      }
+    `;
+  }
+
+  const { exportType = 'vanilla' } = type;
+
+  if (!exportTypes.includes(exportType)) {
+    throw new Error('Unknown export type');
+  }
+
+  return (options: AdapterOptions) => `
+    import addSymbol from 'vite-plugin-svg-sprite/runtime/inject.js';
+    import { adapter } from 'vite-plugin-svg-sprite/runtime/adapters/${exportType}.js';
+    const id = ${stringify(options.id)};
+    const name = ${stringify(options.name)};
+    const symbolXml = ${stringify(options.symbolXml)};
+    const { dispose } = addSymbol(symbolXml, id);
+    
+    export default adapter(id, name);
+    export const attributes = ${stringify(options.attributes)}
+
+    if (import.meta.hot) {
+      import.meta.hot.dispose(dispose);
+      import.meta.hot.accept();
+    }
+  `;
+}
+
 export default (options?: SvgSpriteOptions) => {
   const match = options?.include ?? '**.svg';
   const svgoOptions = options?.svgo;
+
+  const moduleTemplate = getModuleTemplate(options);
 
   const plugin: Plugin = {
     name: 'svg-sprite',
@@ -68,30 +138,8 @@ export default (options?: SvgSpriteOptions) => {
 
       const { symbolXml, attributes } = symbolResults;
 
-      let exportType = options?.exportType;
-      if (!exportType || !exportTypes.includes(exportType)) {
-        exportType = 'vanilla';
-      }
-
-      const codeToReturn = `
-        import addSymbol from 'vite-plugin-svg-sprite/runtime/inject.js';
-        import { adapter } from 'vite-plugin-svg-sprite/runtime/adapters/${exportType}.js';
-        const id = ${stringify(symbolId)};
-        const name = ${stringify(name)};
-        const symbolXml = ${stringify(symbolXml)};
-        const { dispose } = addSymbol(symbolXml, id);
-        
-        export default adapter(id, name);
-        export const attributes = ${stringify(attributes)}
-
-        if (import.meta.hot) {
-          import.meta.hot.dispose(dispose);
-          import.meta.hot.accept();
-        }
-      `;
-
       return {
-        code: codeToReturn,
+        code: moduleTemplate({ id: symbolId, name, symbolXml, attributes }),
         moduleSideEffects: options?.moduleSideEffects ?? true,
         map: { mappings: '' },
       };
