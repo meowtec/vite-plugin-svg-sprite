@@ -10,7 +10,7 @@ export const adapter: Adapter = (id, name) => defineComponent({
       height: '1em',
       ...attrs,
     }, [
-      h('use', { 'xlink:href': `#${id}` }),
+      h('use', { href: `#${id}` }),
     ]);
   },
 });

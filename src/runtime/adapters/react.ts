@@ -8,7 +8,7 @@ export const adapter: Adapter = (id, name) => {
       width: '1em',
       height: '1em',
       ...props,
-    }, createElement('use', { xlinkHref: `#${id}` }))
+    }, createElement('use', { href: `#${id}` }))
   ));
 
   Icon.displayName = `Icon${capitalizeFirstLetter(name)}`;
