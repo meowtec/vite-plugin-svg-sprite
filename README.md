@@ -63,7 +63,7 @@ For users not using React or Vue, set the `exportType` to `'vanilla'`. The impor
 import IconFoo from './icons/foo.svg';
 const html = `
   <svg>
-    <use xlink:href="#${IconFoo}" />
+    <use href="#${IconFoo}" />
   </svg>
 `;
 ```
@@ -83,7 +83,7 @@ To get proper type hints in TypeScript, include the appropriate type definitions
 
 - **symbolId**: (`string`, optional) Controls the generated symbol ID. Default is `'icon-[name]'`.
 
-- **exportType**: (`'vanilla' | 'react' | 'vue'`, optional) Determines the type of the exported value. Default is `'vanilla'`. 
+- **exportType**: (`'vanilla' | 'react' | 'vue'`, optional) Determines the type of the exported value. Default is `'vanilla'`.
   - If set to `'vanilla'`, the value will be the `symbolId`.
   - If set to `'react'`, the value will be a React component.
   - If set to `'vue'`, the value will be a Vue component.

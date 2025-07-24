@@ -4,7 +4,7 @@
     aria-hidden="true"
   >
     <use
-      :xlink:href="`#${name}`"
+      href="`#${name}`"
     />
   </svg>
 </template>
