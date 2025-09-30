@@ -27,7 +27,7 @@ interface AdapterOptions {
 
 export interface CustomExportType {
   exportType: 'custom';
-  adapter: (options: AdapterOptions) => unknown;
+  adapter: string;
 }
 
 type ExportType = DefaultExportType | CustomExportType;
@@ -59,8 +59,9 @@ function prepareTemplate(props: { adapterImport?: string; adapter: string }) {
       const symbolXml = ${stringify(options.symbolXml)};
       const { dispose } = addSymbol(symbolXml, id);
       
-      export default ${props.adapter};
       export const attributes = ${stringify(options.attributes)}
+
+      export default ${props.adapter};
 
       if (import.meta.hot) {
         import.meta.hot.dispose(dispose);
@@ -75,7 +76,7 @@ function getModuleTemplate(type: ExportType = {}) {
       throw new Error('Export type is set to "custom", but adapter is not provided. Please add "adapter" option in config.')
     }
 
-    return prepareTemplate({ adapter: type.adapter.toString() });
+    return prepareTemplate({ adapter: type.adapter });
   }
 
   const { exportType = 'vanilla' } = type;
