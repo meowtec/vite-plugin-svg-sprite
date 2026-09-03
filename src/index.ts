@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import micromatch from 'micromatch';
 import { optimize, Config as SvgoOptimizeOptions } from 'svgo';
-import { Plugin } from 'vite';
+import type { Plugin } from 'vite';
 import { svgToSymbol } from './svg-to-symbol.js';
 
 const { stringify } = JSON;
